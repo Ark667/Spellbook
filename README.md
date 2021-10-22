@@ -34,9 +34,8 @@
   </a> -->
 
 <h1 align="center">Spellbook</h1>
-
   <p align="center">
-    D&D inspired Powershell helper to register complex commands as simple functions. Every wizard should have one.
+    D&D inspired Powershell helper to register defined commands as simple functions with parameter completers. Every Wizard should have one.
     <br />
     <a href="https://github.com/Ark667/Spellbook"><strong>Explore the docs »</strong></a>
     <br />    
@@ -60,6 +59,7 @@
     </li>
     <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#tips">Tips</a></li>
     <!-- <li><a href="#roadmap">Roadmap</a></li> -->
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -75,9 +75,9 @@
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-This project was intended to boost Powershell productivity by making day to day tasks faster and easier. Basic idea is define Powershell
+This project was intended to boost Powershell productivity by making day to day tasks faster and easier. The basic idea is define Powershell
 commands with its parameter and default value definitions in a file, and make a process register function aliases over them with parameter
-helpers. This makes the command call crazy easy with Tab autocomplete magic.
+completers. This makes the command call crazy easy with Tab autocomplete magic.
 
 This idea comes specially useful with Docker containers, avoiding to install nothing but Docker, and run complex commands without extra prerequisites.
 Some extra features where added after, like extended history, index, and command help.
@@ -89,7 +89,22 @@ Some extra features where added after, like extended history, index, and command
 ### Built With
 
 * [Powershell](https://docs.microsoft.com/powershell/)
+
+Powershell execution policy must allow script execution. 
+<!-- https://adamtheautomator.com/how-to-sign-powershell-script/ -->
+ 
+```pws
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
 * [powershell-yaml](https://github.com/cloudbase/powershell-yaml)
+
+Spell definitions are YAML based, but Powershell does not have a built in ConvertFrom-Yaml. Installing this module
+makes the trick for now.
+
+```pws
+Install-Module powershell-yaml
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -98,35 +113,21 @@ Some extra features where added after, like extended history, index, and command
 <!-- GETTING STARTED -->
 ## Getting Started
 
-notepad.exe $profile
-```sh
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-Install-Module powershell-yaml
-```
-
-https://adamtheautomator.com/how-to-sign-powershell-script/
-
-
-```sh
-Get-ExecutionPolicy -List
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
-```
-
 1. Clone the repo.
 
-   ```sh
+   ```pws
    git clone https://github.com/Ark667/Spellbook.git
    ```
 
 2. Execute Spellbook register.
 
-   ```sh
-   ./Spellbook.config.ps1
+   ```pws
+   .\Spellbook\src\Spellbook.ps1
    ```
 
 3. Execute index command, just type "Spell" and Tab through options.
 
-   ```sh
+   ```pws
    Spellbook-Index
    ```
 
@@ -141,38 +142,56 @@ The global commands you can search for spells, view its documentation or update 
 
 The index shows available spells registered. Filter argument apply over result on Tags and School.
 
-```sh
+```pws
 Spellbook-Index [filter]
 ```
 
 Help shows command documentation.
 
-```sh
+```pws
 Spellbook-Help [spell]
 ```
 
 History shows commands execution log with its full info.
 
-```sh
+```pws
 Spellbook-History
 ```
 
 Update registers the current definitions.
 
-```sh
+```pws
 Spellbook-Update
 ```
 
-Now you can execute the spells.
+Now you can execute some spells.
 
 This example execute de AWS Cli through official Docker container. This spell (Aws-Cli) also has 
 an alias to make it work like AWS Cli where installed in your machine.
 
-```sh
+```pws
 aws
 ```
 
+This simple spell will create a MySql container with mapped volume, exposed port and default root password, everything displayed on output.
 
+```pws
+Create-MySql
+```
+
+Just enjoy!
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- USAGE EXAMPLES -->
+## Tips
+
+Spellbook load can be added on Powershell terminal startup adding a call to Spellbook.ps1 on profile file. Just edit
+the file with this call.
+
+```pws
+notepad.exe $profile
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
