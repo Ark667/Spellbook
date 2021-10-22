@@ -1,0 +1,177 @@
+
+spellbook:
+
+  spells:
+
+    #   ▄▄·        ▐ ▄  ▐▄▄▄▄• ▄▌▄▄▄   ▄▄▄· ▄▄▄▄▄▪         ▐ ▄
+    #  ▐█ ▌▪▪     •█▌▐█  ·███▪██▌▀▄ █·▐█ ▀█ •██  ██ ▪     •█▌▐█
+    #  ██ ▄▄ ▄█▀▄ ▐█▐▐▌▪▄ ███▌▐█▌▐▀▀▄ ▄█▀▀█  ▐█.▪▐█· ▄█▀▄ ▐█▐▐▌
+    #  ▐███▌▐█▌.▐▌██▐█▌▐▌▐█▌▐█▄█▌▐█•█▌▐█ ▪▐▌ ▐█▌·▐█▌▐█▌.▐▌██▐█▌
+    #  ·▀▀▀  ▀█▄▀▪▀▀ █▪ ▀▀▀• ▀▀▀ .▀  ▀ ▀  ▀  ▀▀▀ ▀▀▀ ▀█▄▀▪▀▀ █▪
+    # Conjuration: Create resources
+
+    - spell:
+        name: Create-Alpine
+        synopsis: Run basic Alpine Linux.
+        level: 1
+        school: Conjuration
+        tags:
+          - Cli
+        command: docker run -it --rm --name alpine-$(Get-Random -Maximum 100) 'alpine:latest'
+
+    - spell:
+        name: Create-SqlServer
+        synopsis: Configured with persistent volume for data and automatic restart. User "sa".
+        level: 2
+        school: Conjuration
+        tags:
+          - SqlServer
+        command: docker run -d -p "<port>`:1433" -v sqlserver:/var/opt/mssql -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<password>" --restart="always" --name sqlserver-$(Get-Random -Maximum 100) 'mcr.microsoft.com/mssql/server:latest'
+        parameters:
+          - parameter:
+              name: port
+              default: 1633
+          - parameter:
+              name: password
+
+    - spell:
+        name: Create-RabbitMq
+        synopsis:
+        level: 2
+        school: Conjuration
+        tags:
+          - RabbitMq
+        command: docker run -d -p 5672:5672 -p 15672:15672 --restart="always" --name rabbitmq-$(Get-Random -Maximum 100) -e RABBITMQ_DEFAULT_USER=user -e 'RABBITMQ_DEFAULT_PASS=<password>' rabbitmq:3-management
+        parameters:
+          - parameter:
+              name: port
+              default: 1633
+          - parameter:
+              name: password
+
+    - spell:
+        name: Create-DynamoDb
+        synopsis: Configured with persistent volume for data and automatic restart.
+        level: 3
+        school: Conjuration
+        tags:
+          - DynamoDb
+        command: docker run -d -p "<port>`:8000" -v dynamodb:/home/dynamodblocal --restart="always" --name dynamodb-$(Get-Random -Maximum 100) amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/
+        parameters:
+          - parameter:
+              name: port
+              default: 8042
+
+    - spell:
+        name: Create-ElastiSearch-Stack
+        synopsis: Create new ElasticSearch stack with APM Server and Kibana dashboard.
+        remarks: >
+          https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+          https://www.elastic.co/guide/en/kibana/current/docker.html
+          https://www.elastic.co/guide/en/apm/server/current/running-on-docker.html
+        level: 7
+        school: Conjuration
+        tags:
+          - Elasticsearch
+          - Kibana
+        command: >
+          docker network inspect elastic > `$null || docker network create elastic;
+          docker run -d --name <elasticsearchname> --restart="always" -p <elasticsearchport>`:9200 -e "discovery.type=single-node" --network elastic -v <elasticsearchname>`:/usr/share/elasticsearch/data docker.elastic.co/elasticsearch/elasticsearch:7.13.2;
+          docker run -d --name <kibananame> --restart="always" -p <kibanaport>`:5601 -e "ELASTICSEARCH_URL=http://<elasticsearchname>`:9200" -e ELASTICSEARCH_HOSTS="http://<elasticsearchname>`:9200" --network elastic -v <kibananame>`:/usr/share/kibana/config docker.elastic.co/kibana/kibana:7.13.2;
+          docker run -d --name <apmservername> --restart="always" -p <apmserverport>`:8200 --network elastic docker.elastic.co/apm/apm-server:7.13.2 -e -E output.elasticsearch.hosts=http://<elasticsearchname>`:9200
+        parameters:
+          - parameter:
+              name: elasticsearchname
+              default: elasticsearch-default
+          - parameter:
+              name: elasticsearchport
+              default: 9200
+          - parameter:
+              name: kibananame
+              default: kibana-default
+          - parameter:
+              name: kibanaport
+              default: 5601
+          - parameter:
+              name: apmservername
+              default: apmserver-default
+          - parameter:
+              name: apmserverport
+              default: 8200
+    
+    - spell:
+        name: Create-MongoDb
+        synopsis: Create new MongoDb database.
+        level: 2
+        school: Conjuration
+        tags:
+          - MongoDb
+        command: >
+          docker run -d --name <mongoname> --restart="always" -p <mongoport>`:27017 -v <mongoname>`:/data/db mongo
+        parameters:
+          - parameter:
+              name: mongoname
+              default: mongo-default
+          - parameter:
+              name: mongoport
+              default: 27027
+    
+    - spell:
+        name: Create-Minio
+        synopsis: Create new Minio storage.
+        level: 2
+        school: Conjuration
+        tags:
+          - Minio
+        command: >
+          docker run -d --name <minioname> --restart="always" -p <minioport>`:9000 -v <minioname>`:/data minio/minio server /data
+        parameters:
+          - parameter:
+              name: minioname
+              default: minio-default
+          - parameter:
+              name: minioport
+              default: 9005
+
+    - spell:
+        name: Create-MySql
+        synopsis: Create new MySql server.
+        remarks: >
+          For accesing container command line -> docker exec -it mysql-default bash
+          For accesing mysql cli on container -> mysql -hlocalhost -uroot -proot
+        level: 2
+        school: Conjuration
+        tags:
+          - MySql
+        command: >
+          docker run -d --name <mysqlname> --restart="always" -p <mysqlport>`:3306 -v <mysqlname>`:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=<mysqladminpassword> mysql
+        parameters:
+          - parameter:
+              name: mysqlname
+              default: mysql-default
+          - parameter:
+              name: mysqlport
+              default: 3406
+          - parameter:
+              name: mysqladminpassword
+              default: root
+
+    - spell:
+        name: Create-SonarQube
+        synopsis: Create new SonarQube service.
+        remarks: >
+          https://docs.sonarqube.org/latest/setup/install-server/
+          SonarQube uses by default an H2 database not suited for production, but data is persisted in volumes. Refer doc to configure proper database.
+        level: 3
+        school: Conjuration
+        tags:
+          - SonarQube
+        command: >
+          docker run -d --name <sonarqubename> --restart="always" -p <sonarqubeport>`:9000 -v <sonarqubename>-data`:/opt/sonarqube/data -v <sonarqubename>-extensions`:/opt/sonarqube/extensions -v <sonarqubename>-logs`:/opt/sonarqube/logs sonarqube
+        parameters:
+          - parameter:
+              name: sonarqubename
+              default: sonarqube-default
+          - parameter:
+              name: sonarqubeport
+              default: 9200

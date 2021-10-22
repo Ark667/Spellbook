@@ -1,0 +1,36 @@
+
+spellbook:
+
+  spells:
+
+    #  ·▄▄▄▄  ▪   ▌ ▐·▪   ▐ ▄  ▄▄▄· ▄▄▄▄▄▪         ▐ ▄
+    #  ██▪ ██ ██ ▪█·█▌██ •█▌▐█▐█ ▀█ •██  ██ ▪     •█▌▐█
+    #  ▐█· ▐█▌▐█·▐█▐█•▐█·▐█▐▐▌▄█▀▀█  ▐█.▪▐█· ▄█▀▄ ▐█▐▐▌
+    #  ██. ██ ▐█▌ ███ ▐█▌██▐█▌▐█ ▪▐▌ ▐█▌·▐█▌▐█▌.▐▌██▐█▌
+    #  ▀▀▀▀▀• ▀▀▀. ▀  ▀▀▀▀▀ █▪ ▀  ▀  ▀▀▀ ▀▀▀ ▀█▄▀▪▀▀ █▪
+    # Divination: View info
+
+    - spell:
+        name: View-DynamoDb-Tables
+        synopsis: List tables in AWS profile region (or local with endpoint). Requires AWS credentials.
+        level: 1
+        school: Divination
+        tags:
+          - DynamoDb
+        command: docker run --rm -it --network="host" -v "$env:USERPROFILE\.aws:/root/.aws" amazon/aws-cli dynamodb list-tables
+
+    - spell:
+        name: Check-Latency
+        level: 4
+        school: Divination
+        tags:
+          - Curl
+        command: >
+          docker run --rm -it --name curl-$(Get-Random -Maximum 100) --entrypoint sh curlimages/curl -c "echo 'Press Ctrl+C to stop...';echo '[Latency;Http status]'; while true; do curl -o /dev/null -s -w '%{time_total}\t%{http_code}\n' <site>; sleep <delay>; done"
+        parameters:
+          - parameter:
+              name: site
+              default: "https://google.es/"
+          - parameter:
+              name: delay
+              default: 2

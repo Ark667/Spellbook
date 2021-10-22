@@ -1,0 +1,109 @@
+
+spellbook:
+
+  spells:
+
+    #  ▪  ▄▄▌  ▄▄▌  ▄• ▄▌.▄▄ · ▪         ▐ ▄
+    #  ██ ██•  ██•  █▪██▌▐█ ▀. ██ ▪     •█▌▐█
+    #  ▐█·██▪  ██▪  █▌▐█▌▄▀▀▀█▄▐█· ▄█▀▄ ▐█▐▐▌
+    #  ▐█▌▐█▌▐▌▐█▌▐▌▐█▄█▌▐█▄▪▐█▐█▌▐█▌.▐▌██▐█▌
+    #  ▀▀▀.▀▀▀ .▀▀▀  ▀▀▀  ▀▀▀▀ ▀▀▀ ▀█▄▀▪▀▀ █▪
+    # Illusion: Cli, Tricks
+
+    - spell:
+        name: Aws-Cli
+        alias: aws
+        remarks: Maps current path on container base path to allow copy files operations.
+        level: 1
+        school: Illusion
+        tags:
+          - Aws
+          - Cli
+        command: docker run --rm -it --name aws-cli -v "$env:USERPROFILE\.aws:/root/.aws" -v "$($PWD):/aws" amazon/aws-cli <command>
+        parameters:
+          - parameter:
+              name: command
+              default: ""
+              type: cli
+
+    - spell:
+        name: Terraform-Cli
+        alias: tf
+        synopsis: CLI tools for Terraform.
+        remarks: Takes authetication token from host ocnfiguartion on $($env:APPDATA)/terraform.d.
+        level: 2
+        school: Illusion
+        tags:
+          - Terraform
+          - Cli
+        command: docker run -it --rm --name terraform-cli -v "$($env:APPDATA)/terraform.d:/root/.terraform.d" -v "$($PWD):/workspace" -w /workspace hashicorp/terraform:light <command>
+        parameters:
+          - parameter:
+              name: command
+              default: ""
+              type: cli
+
+    - spell:
+        name: Azure-Cli
+        alias: az
+        synopsis: CLI for Azure.
+        remarks:
+          https://hub.docker.com/_/microsoft-azure-cli?ref=login&tab=description
+        level: 1
+        school: Illusion
+        tags:
+          - Azure
+          - Cli
+        command: docker run -it --rm --name az-cli mcr.microsoft.com/azure-cli:latest az <command>
+        parameters:
+          - parameter:
+              name: command
+              default: ""
+              type: cli
+
+    - spell:
+        name: Git-Cli
+        alias: git2
+        remarks: alter login <username> with password = "***"
+        level: 1
+        school: Illusion
+        tags:
+          - Git
+          - Cli
+        command: docker run -it --rm --name git-cli -v "$($PWD):/git" -v "$($env:USERPROFILE):/root" alpine/git:latest <command>
+        parameters:
+          - parameter:
+              name: command
+              default: ""
+              type: cli
+
+    - spell:
+        name: Run-Python-Sript
+        alias: py
+        synopsis: Run Python script.
+        remarks: https://hub.docker.com/_/python
+        level: 2
+        school: Illusion
+        tags:
+          - Python
+          - Cli
+        command: docker run -it --rm --name python-cli -v "$($PWD):/usr/src/myapp" -w /usr/src/myapp python:3 python <script>
+        parameters:
+          - parameter:
+              name: script
+
+    - spell:
+        name: Curl-Cli
+        alias: curl
+        remarks: Execute Curl command from container
+        level: 1
+        school: Illusion
+        tags:
+          - Curl
+          - Cli
+        command: docker run --rm --name curl-cli curlimages/curl <command>
+        parameters:
+          - parameter:
+              name: command
+              default: ""
+              type: cli

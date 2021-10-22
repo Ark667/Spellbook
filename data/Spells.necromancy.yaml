@@ -1,0 +1,20 @@
+
+spellbook:
+
+  spells:
+
+    #   ▐ ▄ ▄▄▄ . ▄▄· ▄▄▄        • ▌ ▄ ·.  ▄▄▄·  ▐ ▄  ▄▄·  ▄· ▄▌
+    #  •█▌▐█▀▄.▀·▐█ ▌▪▀▄ █·▪     ·██ ▐███▪▐█ ▀█ •█▌▐█▐█ ▌▪▐█▪██▌
+    #  ▐█▐▐▌▐▀▀▪▄██ ▄▄▐▀▀▄  ▄█▀▄ ▐█ ▌▐▌▐█·▄█▀▀█ ▐█▐▐▌██ ▄▄▐█▌▐█▪
+    #  ██▐█▌▐█▄▄▌▐███▌▐█•█▌▐█▌.▐▌██ ██▌▐█▌▐█ ▪▐▌██▐█▌▐███▌ ▐█▀·.
+    #  ▀▀ █▪ ▀▀▀ ·▀▀▀ .▀  ▀ ▀█▄▀▪▀▀  █▪▀▀▀ ▀  ▀ ▀▀ █▪·▀▀▀   ▀ •
+    # Necromancy: Delete resources, restores
+
+    - spell:
+        name: Delete-All-Docker-Resources
+        synopsis: Delete all Docker containers, delete all Docker images, delete all Docker volumes.
+        level: 2
+        school: Necromancy
+        tags:
+          - Docker
+        command: docker rm -f $(docker ps -a -q); docker rmi -f $(docker images -a -q); docker volume rm $(docker volume ls -q)

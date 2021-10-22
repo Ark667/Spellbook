@@ -1,0 +1,56 @@
+
+spellbook:
+
+  spells:
+
+    #  ▄▄▄ . ▐ ▄  ▄▄·  ▄ .▄ ▄▄▄·  ▐ ▄ ▄▄▄▄▄▄▄▄ .• ▌ ▄ ·.  ▐ ▄ ▄▄▄▄▄
+    #  ▀▄.▀·•█▌▐█▐█ ▌▪██▪▐█▐█ ▀█ •█▌▐█•██  ▀▄.▀··██ ▐███▪•█▌▐█•██
+    #  ▐▀▀▪▄▐█▐▐▌██ ▄▄██▀▐█▄█▀▀█ ▐█▐▐▌ ▐█.▪▐▀▀▪▄▐█ ▌▐▌▐█·▐█▐▐▌ ▐█.▪
+    #  ▐█▄▄▌██▐█▌▐███▌██▌▐▀▐█ ▪▐▌██▐█▌ ▐█▌·▐█▄▄▌██ ██▌▐█▌██▐█▌ ▐█▌·
+    #   ▀▀▀ ▀▀ █▪·▀▀▀ ▀▀▀ · ▀  ▀ ▀▀ █▪ ▀▀▀  ▀▀▀ ▀▀  █▪▀▀▀▀▀ █▪ ▀▀▀
+    # Enchantment: Automate actions, configure settings
+
+    - spell:
+        name: Configure-Aws-Profile
+        synopsis: Configure AWS profile with specified access keys.
+        level: 2
+        school: Enchantment
+        tags:
+          - Aws
+        command: docker run --rm -it -v "$env:USERPROFILE\.aws:/root/.aws" --entrypoint bash amazon/aws-cli -c "aws configure set aws_access_key_id <accesskey> && aws configure set aws_secret_access_key <secretaccesskey> && aws iam get-user"
+        parameters:
+          - parameter:
+              name: accesskey
+          - parameter:
+              name: secretaccesskey
+
+    - spell:
+        name: Configure-Docker-Aws-Login
+        synopsis: Configures Docker login for access private AWS ECR. Requires AWS credentials.
+        level: 2
+        school: Enchantment
+        tags:
+          - Docker
+          - Aws
+        command: docker run --rm -it -v "$env:USERPROFILE\.aws:/root/.aws" amazon/aws-cli ecr get-login-password --region <region> | docker login --username AWS --password-stdin "<registry>"
+        parameters:
+          - parameter:
+              name: registry
+              default: XXXXXXXXXXXX.dkr.ecr.eu-west-X.amazonaws.com
+          - parameter:
+              name: region
+              default: eu-west-X
+
+    - spell:
+        name: Restore-AppSettings
+        synopsis: Restore appSettings.Development.json files on form S3 bucket. Requires AWS credentials.
+        level: 3
+        school: Enchantment
+        tags:
+          - Restore
+          - Dev
+        command: docker run --rm -it --name aws-restore -v "$env:USERPROFILE\.aws:/root/.aws" -v "$($PWD):/aws" amazon/aws-cli s3 ls <bucket> --recursive | ForEach-Object { `$_.Substring(31) -replace ('<bucket>' + '/' -replace '(s3:\/\/.*?\/)',''),'' } | ForEach-Object { docker run --rm -it --name aws-restore -v "$env:USERPROFILE\.aws:/root/.aws" -v "$($PWD):/aws" amazon/aws-cli s3 cp <bucket>/`$_ ./`$_ }
+        parameters:
+          - parameter:
+              name: bucket
+              default: s3://example/appsettings

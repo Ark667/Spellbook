@@ -1,0 +1,44 @@
+
+spellbook:
+
+  spells:
+
+    #  ▄▄▄· ▄▄▄▄·  ▐▄▄▄▄• ▄▌▄▄▄   ▄▄▄· ▄▄▄▄▄▪         ▐ ▄
+    # ▐█ ▀█ ▐█ ▀█▪  ·███▪██▌▀▄ █·▐█ ▀█ •██  ██ ▪     •█▌▐█
+    # ▄█▀▀█ ▐█▀▀█▄▪▄ ███▌▐█▌▐▀▀▄ ▄█▀▀█  ▐█.▪▐█· ▄█▀▄ ▐█▐▐▌
+    # ▐█ ▪▐▌██▄▪▐█▐▌▐█▌▐█▄█▌▐█•█▌▐█ ▪▐▌ ▐█▌·▐█▌▐█▌.▐▌██▐█▌
+    #  ▀  ▀ ·▀▀▀▀  ▀▀▀• ▀▀▀ .▀  ▀ ▀  ▀  ▀▀▀ ▀▀▀ ▀█▄▀▪▀▀ █▪
+    # Abjuration: Backups, security
+
+    - spell:
+        name: Backup-AppSettings
+        synopsis: Backup appSettings.Development.json files on dev S3 bucket. Useful to switch between environment configurations. Requires AWS credentials.
+        level: 3
+        school: Abjuration
+        tags:
+          - Backup
+          - Dev
+        command: Get-ChildItem -Path * -Include <filter> -Recurse | Resolve-Path -Relative | Where-Object { `$_ -notmatch 'bin' } | ForEach-Object  { `$_ -replace '\\','/' } | ForEach-Object { docker run --rm -it --name aws-backup -v "$env:USERPROFILE\.aws:/root/.aws" -v "$($PWD):/aws" amazon/aws-cli s3 cp `$_ <bucket>/`$(`$_ -replace '\./','') }
+        parameters:
+          - parameter:
+              name: filter
+              default: appsettings.Development.json
+          - parameter:
+              name: bucket
+
+    - spell:
+        name: Backup-MongoDb-Database
+        synopsis: Create dump files from target MongoDb database.
+        level: 3
+        school: Abjuration
+        tags:
+          - Backup
+          - MongoDb
+        command: docker run -it --rm --name mongo-dump --entrypoint bash --network host -v "$($PWD)/mongodb:/dump" mongo -c "mongodump --uri=mongodb://<endpoint> --db=<database> --archive=/dump/$(Get-Date -UFormat '+%Y%m%dT%H%M%S') --gzip"
+        parameters:
+          - parameter:
+              name: endpoint
+              default: localhost:27027
+          - parameter:
+              name: database
+              default: target_database
