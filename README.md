@@ -82,6 +82,8 @@ completers. This makes the command call crazy easy with Tab autocomplete magic.
 This idea comes specially useful with Docker containers, avoiding to install nothing but Docker, and run complex commands without extra prerequisites.
 Some extra features where added after, like extended history, index, and command help.
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I2I16OYC5)
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
