@@ -1,22 +1,6 @@
 <div id="top"></div>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
 
 <!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -24,16 +8,10 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <!-- <a href="https://github.com/Ark667/Spellbook">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a> -->
-
-<h1 align="center">Spellbook</h1>
+  <h1 align="center">Spellbook</h1>
   <p align="center">
     D&D inspired Powershell helper to register defined commands as simple functions with parameter completers. Every Wizard should have one.
     <br />
@@ -44,8 +22,6 @@
     <a href="https://github.com/Ark667/Spellbook/issues">Request Feature</a>
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -68,8 +44,6 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -83,8 +57,6 @@ This idea comes specially useful with Docker containers, avoiding to install not
 Some extra features where added after, like extended history, index, and command help.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 ### Built With
 
@@ -109,7 +81,6 @@ Install-Module powershell-yaml
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -132,7 +103,6 @@ Install-Module powershell-yaml
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -195,7 +165,6 @@ notepad.exe $profile
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 <!-- CONTRIBUTING -->
 ## Contributing
 
@@ -214,16 +183,12 @@ Show me your spells!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- CONTACT -->
 ## Contact
@@ -234,14 +199,11 @@ Project Link: [https://github.com/Ark667/Spellbook](https://github.com/Ark667/Sp
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 ## Acknowledgments
 
 [http://patorjk.com](http://patorjk.com/software/taag/#p=display&c=bash&f=Delta%20Corps%20Priest%201&t=Spellbook)
 
-
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

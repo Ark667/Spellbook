@@ -34,3 +34,18 @@ spellbook:
           - parameter:
               name: delay
               default: 2
+
+    - spell:
+        name: View-K8s-Deployments
+        level: 2
+        school: Divination
+        tags:
+          - K8s
+          - Kubectl
+        command: >
+          docker run --rm -it -v "$env:USERPROFILE\.kube:/root/.kube" ghcr.io/ark667/k8sutils:master
+          kubectl get deployments -n <namespace> -o=custom-columns=DEPLOYMENT:.metadata.name,CONTAINER_IMAGE:.spec.template.spec.containers[*].image,READY_REPLICAS:.status.readyReplicas
+        parameters:
+          - parameter:
+              name: namespace
+              default: example

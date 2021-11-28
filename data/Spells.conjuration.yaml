@@ -175,3 +175,83 @@ spellbook:
           - parameter:
               name: sonarqubeport
               default: 9200
+              
+    - spell:
+        name: Create-SonarQube-With-Postrgres
+        synopsis: Create new SonarQube service with PostgreSQL database.
+        remarks: >
+          https://docs.sonarqube.org/latest/setup/environment-variables/
+          Run the following command to avoid internal ElasticSearch error.
+          sysctl -w vm.max_map_count=262144
+          Database 'sonarqube' must exists.
+        level: 5
+        school: Conjuration
+        tags:
+          - SonarQube
+          - Postgres
+        command: >
+          docker run -d --name <sonarqubename> --restart="always" --network postgres -p <sonarqubeport>`:9000
+          -v <sonarqubename>-data`:/opt/sonarqube/data
+          -v <sonarqubename>-extensions`:/opt/sonarqube/extensions
+          -v <sonarqubename>-logs`:/opt/sonarqube/logs
+          -e SONAR_JDBC_URL=jdbc`:postgresql`://<postgreshost>`:<postgresport>/sonarqube
+          -e SONAR_JDBC_USERNAME=<postgresuser>
+          -e SONAR_JDBC_PASSWORD=<postgrespassword>
+          sonarqube;
+          echo "Log in http://localhost:<sonarqubeport>/ with user admin and password admin";
+        parameters:
+          - parameter:
+              name: sonarqubename
+              default: sonarqube-default
+          - parameter:
+              name: sonarqubeport
+              default: 9210
+          - parameter:
+              name: postgreshost
+              default: postgres-default
+          - parameter:
+              name: postgresport
+              default: 5432
+          - parameter:
+              name: postgresuser
+              default: postgres
+          - parameter:
+              name: postgrespassword
+              default: root
+              
+    - spell:
+        name: Create-Postgres-Stack
+        synopsis: Create new Postgre SQL service. docker exec -it postgres-default bash
+        level: 3
+        school: Conjuration
+        tags:
+          - Postgres
+          - SQL
+        command: >
+          docker network inspect postgres > `$null || docker network create postgres;
+          docker run --name <postgresname> --restart="always" --network postgres -p <postgresport>`:5432 -v <postgresname>`:/var/lib/postgresql/data -e POSTGRES_PASSWORD=<postgresrootpassword> -d postgres;
+          docker run --name <pgadminname> --restart="always" --network postgres -p <pgadminport>`:80 -v <pgadminname>`:/var/lib/pgadmin -e "PGADMIN_DEFAULT_EMAIL=<pgadminuser>" -e "PGADMIN_DEFAULT_PASSWORD=<pgadminpassword>" -d dpage/pgadmin4;
+          echo "Log in http://localhost:<pgadminport>/ with user <pgadminuser> and password <pgadminpassword>";
+          echo "Servers -> Create -> Server -> name: default; host: <postgresname>; username: postgres; password: <postgresrootpassword> -> Save";
+        parameters:
+          - parameter:
+              name: postgresname
+              default: postgres-default
+          - parameter:
+              name: postgresport
+              default: 5532
+          - parameter:
+              name: postgresrootpassword
+              default: root
+          - parameter:
+              name: pgadminname
+              default: pgadmin-default
+          - parameter:
+              name: pgadminport
+              default: 9090
+          - parameter:
+              name: pgadminuser
+              default: user@domain.com
+          - parameter:
+              name: pgadminpassword
+              default: root
