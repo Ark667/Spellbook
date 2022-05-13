@@ -54,7 +54,7 @@ spellbook:
         tags:
           - Azure
           - Cli
-        command: docker run -it --rm --name az-cli mcr.microsoft.com/azure-cli:latest az <command>
+        command: docker run -it --rm --name az-cli -v "$env:USERPROFILE\.azure:/root/.azure" mcr.microsoft.com/azure-cli:latest az <command>
         parameters:
           - parameter:
               name: command
