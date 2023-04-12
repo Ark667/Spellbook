@@ -8,7 +8,7 @@ spellbook:
     #  ▐█▐▐▌▐▀▀▪▄██ ▄▄▐▀▀▄  ▄█▀▄ ▐█ ▌▐▌▐█·▄█▀▀█ ▐█▐▐▌██ ▄▄▐█▌▐█▪
     #  ██▐█▌▐█▄▄▌▐███▌▐█•█▌▐█▌.▐▌██ ██▌▐█▌▐█ ▪▐▌██▐█▌▐███▌ ▐█▀·.
     #  ▀▀ █▪ ▀▀▀ ·▀▀▀ .▀  ▀ ▀█▄▀▪▀▀  █▪▀▀▀ ▀  ▀ ▀▀ █▪·▀▀▀   ▀ •
-    # Necromancy: Delete resources, restores
+    # Necromancy: Delete resources, data restores
 
     - spell:
         name: Delete-All-Docker-Resources
@@ -18,3 +18,23 @@ spellbook:
         tags:
           - Docker
         command: docker rm -f $(docker ps -a -q); docker rmi -f $(docker images -a -q); docker volume rm $(docker volume ls -q)
+        
+    - spell:
+        name: Restore-MongoDb-Database
+        synopsis: Restore target MongoDb database from dump files. --db=<database>
+        level: 3
+        school: Necromancy
+        tags:
+          - Restore
+          - MongoDb
+        command: docker run -it --rm --name mongo-restore --entrypoint bash --network host -v "$($PWD)/mongodb:/restore" mongo -c "mongorestore --host=localhost --port=28017 --username=root --password=yourStrongPassword --authenticationDatabase=admin --nsInclude=* --archive=<archive>"
+        parameters:
+          - parameter:
+              name: endpoint
+              default: localhost:27017
+          - parameter:
+              name: database
+              default: target_database
+          - parameter:
+              name: archive
+              default: archive.dump
